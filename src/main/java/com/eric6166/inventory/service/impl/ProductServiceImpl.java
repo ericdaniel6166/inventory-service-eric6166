@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,13 +27,12 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     ModelMapper modelMapper;
 
-    @SuppressWarnings("squid:S6204")
+//    @SuppressWarnings("squid:S6204")
     @Override
     public PageResponse<ProductDto> findAll(AppPageRequest request) {
-        var direction = Sort.Direction.fromString(request.getSortDirection());
-        var orders = request.getSortColumn().stream()
-                .map(property -> new Sort.Order(direction, property))
-                .collect(Collectors.toList());
+        List<Sort.Order> orders = List.of(new Sort.Order(
+                Sort.Direction.fromString(request.getSortDirection()),
+                request.getSortColumn()));
         PageUtils.addDefaultOrder(orders);
         return findAll(request.getPageNumber(),
                 request.getPageSize(),
