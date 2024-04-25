@@ -1,0 +1,24 @@
+app:
+  application-name: inventory # change
+  server-port: 8083 # change
+  application-version: v1
+  context-path: api/${app.application-name}/${app.application-version}
+  database-hostname: localhost # change
+  database-port: 5434 # change
+  database-name: ${app.application-name}_service_${app.application-version}
+
+spring:
+  application:
+    name: ${app.application-name} service
+  datasource:
+    url: jdbc:postgresql://${app.database-hostname}:${app.database-port}/${app.database-name}
+    username: postgres
+    password: secret
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    locations: classpath:db/migration/
+
+server:
+  port: ${app.server-port}
+  servlet:
+    context-path: /${app.context-path}

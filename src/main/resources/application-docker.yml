@@ -1,0 +1,3 @@
+app:
+  database-hostname: postgres-inventory
+  database-port: 5432
