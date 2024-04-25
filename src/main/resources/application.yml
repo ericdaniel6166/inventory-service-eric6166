@@ -11,7 +11,7 @@ app:
 
 spring:
   application:
-    name: inventory-service
+    name: ${app.application-name}-service
   datasource:
     url: jdbc:postgresql://${app.database-hostname}:${app.database-port}/${app.database-name}
     username: postgres
