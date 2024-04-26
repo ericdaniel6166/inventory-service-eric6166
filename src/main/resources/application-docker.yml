@@ -2,3 +2,4 @@ app:
   database-hostname: postgres-inventory
   database-port: 5432
   eureka-hostname: discovery-service
+  keycloak-host: keycloak

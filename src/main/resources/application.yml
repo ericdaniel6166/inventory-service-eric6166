@@ -8,10 +8,32 @@ app:
   database-name: ${app.application-name}_service_${app.application-version}
   eureka-hostname: localhost # change
   eureka-port: 8761
+  keycloak-host: localhost # change
+  keycloak-port: 8090
+  api-gateway-hostname: localhost # change
+  swagger-api-gateway-hostname: localhost # change
+  api-gateway-server-port: 8181
+  swagger-info-title: Inventory Service # change
+  swagger-info-version: v1.0 # change
+
+security:
+  enabled: true
+  skip-urls:
+    - /guest/**
+    - /actuator/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+    - /api-docs/**
+    - /error/**
 
 spring:
   application:
     name: ${app.application-name}-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${app.keycloak-host}:${app.keycloak-port}/realms/spring-boot-microservices-realm
   datasource:
     url: jdbc:postgresql://${app.database-hostname}:${app.database-port}/${app.database-name}
     username: postgres
@@ -39,6 +61,30 @@ eureka:
     registry-fetch-interval-seconds: 5
   instance:
     lease-renewal-interval-in-seconds: 5
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
+swagger:
+  server:
+    url: http://${app.swagger-api-gateway-hostname}:${app.api-gateway-server-port}/${app.context-path}
+  info:
+    title: ${app.swagger-info-title}
+    version: ${app.swagger-info-version}
+    description: Documentation ${app.swagger-info-title} ${app.swagger-info-version}
+#  security-scheme:
+#    name: bearerAuth
+#    bearer-format: JWT
+#    scheme: bearer
 
 #management:
 #  tracing:
@@ -70,7 +116,7 @@ management:
     diskspace:
       enabled: true
     db:
-      enabled: false
+      enabled: true
   endpoints:
     web:
       exposure:

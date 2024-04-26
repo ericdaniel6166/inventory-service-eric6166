@@ -8,6 +8,8 @@ import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
 import com.eric6166.jpa.dto.AppPageRequest;
 import com.eric6166.jpa.dto.PageResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -32,7 +34,7 @@ public class ProductController {
 
     ProductService productService;
 
-    //    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<PageResponse<ProductDto>> findAll(
             @RequestParam(required = false, defaultValue = Const.DEFAULT_PAGE_NUMBER_STRING)

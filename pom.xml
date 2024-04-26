@@ -26,6 +26,12 @@
             <artifactId>jpa-service</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.eric6166</groupId>
+            <artifactId>security-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
 
     </dependencies>
 

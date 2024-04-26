@@ -27,7 +27,6 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     ModelMapper modelMapper;
 
-//    @SuppressWarnings("squid:S6204")
     @Override
     public PageResponse<ProductDto> findAll(AppPageRequest request) {
         List<Sort.Order> orders = List.of(new Sort.Order(
