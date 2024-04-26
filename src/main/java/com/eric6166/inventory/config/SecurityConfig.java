@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Optional;
+
 @Configuration
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -31,13 +33,15 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(securityProps.getSkipUrls()).permitAll()
-                        .requestMatchers(ROLE_CUSTOMER_URLS).hasRole(SecurityConst.ROLE_CUSTOMER)
-                        .requestMatchers(ROLE_ADMIN_URLS).hasRole(SecurityConst.ROLE_ADMIN)
+                        .requestMatchers(Optional.ofNullable(securityProps.getCustomerUrls()).orElse(ROLE_CUSTOMER_URLS)).hasRole(SecurityConst.ROLE_CUSTOMER)
+                        .requestMatchers(Optional.ofNullable(securityProps.getAdminUrls()).orElse(ROLE_ADMIN_URLS)).hasRole(SecurityConst.ROLE_ADMIN)
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .build();
     }
+
+
 
 
 }
