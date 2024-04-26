@@ -1,6 +1,5 @@
 package com.eric6166.inventory.controller;
 
-import com.eric6166.inventory.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;

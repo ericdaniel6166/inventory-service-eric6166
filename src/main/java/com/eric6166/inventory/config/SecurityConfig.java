@@ -21,8 +21,8 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "security.enabled", havingValue = "true")
 public class SecurityConfig {
 
-    public static final String[] ROLE_CUSTOMER_URLS = {"/customer/**"};
-    public static final String[] ROLE_ADMIN_URLS = {"/admin/**"};
+    private static final String[] ROLE_CUSTOMER_URLS = {"/customer/**"};
+    private static final String[] ROLE_ADMIN_URLS = {"/admin/**"};
 
     SecurityProps securityProps;
 
