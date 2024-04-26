@@ -6,6 +6,7 @@ import com.eric6166.common.validation.ValidString;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
+import com.eric6166.jpa.dto.AppResponse;
 import com.eric6166.jpa.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,7 +36,7 @@ public class ProductController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
-    public ResponseEntity<PageResponse<ProductDto>> findAll(
+    public ResponseEntity<AppResponse<PageResponse<ProductDto>>> findAll(
             @RequestParam(required = false, defaultValue = Const.DEFAULT_PAGE_NUMBER_STRING)
             @Min(value = Const.DEFAULT_PAGE_NUMBER)
             @Max(value = Const.DEFAULT_MAX_INTEGER) Integer pageNumber,
@@ -52,11 +53,11 @@ public class ProductController {
             }) String sortColumn,
             @RequestParam(required = false, defaultValue = Const.DEFAULT_SORT_DIRECTION)
             @ValidEnumString(value = Sort.Direction.class, caseSensitive = false) String sortDirection) {
-        var response = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
-        if (!response.getPageable().isHasContent()) {
+        var data = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
+        if (!data.getPageable().isHasContent()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new AppResponse<>(data));
     }
 
 
