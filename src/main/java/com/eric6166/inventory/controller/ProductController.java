@@ -6,7 +6,7 @@ import com.eric6166.common.validation.ValidString;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
-import com.eric6166.jpa.dto.AppResponse;
+import com.eric6166.common.dto.AppResponse;
 import com.eric6166.jpa.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

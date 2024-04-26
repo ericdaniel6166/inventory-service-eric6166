@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDto extends BaseEntity<String> {
 
-
     Long id;
     String name;
     String description;
