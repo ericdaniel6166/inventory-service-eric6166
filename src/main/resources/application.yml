@@ -18,6 +18,13 @@ app:
   zipkin-hostname: localhost
   zipkin-server-port: 9411
   zipkin-context-path: api/v2/spans
+  zipkin-endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}
+  #kafka
+  kafka-hostname: localhost
+  kafka-port: 9092
+  kafka-default-topic: default-topic
+  kafka-default-concurrency: 3
+  kafka-default-group-id: default-group-id
 
 security:
   enabled: true
@@ -51,11 +58,48 @@ spring:
     validate-on-migrate: true
     enabled: true
     table: schema_history
+  kafka:
+    enabled: true
+    bootstrap-servers: ${app.kafka-hostname}:${app.kafka-port}
+    template:
+      default-topic: ${app.kafka-default-topic}
+      default-group-id: ${app.kafka-default-group-id}
+      properties:
+        default-concurrency: ${app.kafka-default-concurrency}
+    #    producers:
+    #      test-topic:
+    #        topic-name: test-topic
+    #      order-pending:
+    #        topic-name: order-pending
+
+    consumers:
+      test-topic:
+        topic-name: test-topic
+        group-id: test-topic-${spring.application.name}
+        properties:
+          concurrency: ${app.kafka-default-concurrency}
+  #      order-item-not-available:
+  #        topic-name: order-item-not-available
+  #        group-id: order-item-not-available-${spring.application.name}
+  #        properties:
+  #          concurrency: ${app.kafka-default-concurrency}
+  #      order-processing:
+  #        topic-name: order-processing
+  #        group-id: order-processing-${spring.application.name}
+  #        properties:
+  #          concurrency: ${app.kafka-default-concurrency}
+  #      order-payment-processing:
+  #        topic-name: order-payment-processing
+  #        group-id: order-payment-processing-${spring.application.name}
+  #        properties:
+  #          concurrency: ${app.kafka-default-concurrency}
 
 server:
   port: ${app.server-port}
   servlet:
     context-path: /${app.context-path}
+
+
 
 eureka:
   client:
@@ -123,4 +167,4 @@ management:
         include: "*"
   zipkin:
     tracing:
-      endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}
+      endpoint: ${app.zipkin-endpoint}

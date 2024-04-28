@@ -4,3 +4,5 @@ app:
   eureka-hostname: discovery-service
   keycloak-host: keycloak
   zipkin-hostname: zipkin
+  kafka-hostname: kafka
+  kafka-port: 29092
