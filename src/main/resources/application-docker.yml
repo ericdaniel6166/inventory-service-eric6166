@@ -3,3 +3,4 @@ app:
   database-port: 5432
   eureka-hostname: discovery-service
   keycloak-host: keycloak
+  zipkin-hostname: zipkin

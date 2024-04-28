@@ -15,6 +15,9 @@ app:
   api-gateway-server-port: 8181
   swagger-info-title: Inventory Service # change
   swagger-info-version: v1.0 # change
+  zipkin-hostname: localhost
+  zipkin-server-port: 9411
+  zipkin-context-path: api/v2/spans
 
 security:
   enabled: true
@@ -87,12 +90,6 @@ swagger:
 #    scheme: bearer
 
 #management:
-#  tracing:
-#    enabled: true
-#    propagation:
-#      type: b3
-#    sampling:
-#      probability: 1.0
 #  health:
 #    circuitbreakers:
 #      enabled: true
@@ -103,12 +100,15 @@ swagger:
 #  endpoint:
 #    health:
 #      show-details: always
-#  zipkin:
-#    tracing:
-#      endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}
 
 
 management:
+  tracing:
+    enabled: true
+    propagation:
+      type: b3
+    sampling:
+      probability: 1.0
   endpoint:
     health:
       show-details: always
@@ -121,3 +121,6 @@ management:
     web:
       exposure:
         include: "*"
+  zipkin:
+    tracing:
+      endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}

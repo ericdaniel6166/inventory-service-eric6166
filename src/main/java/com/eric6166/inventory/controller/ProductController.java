@@ -35,6 +35,13 @@ public class ProductController {
     ProductService productService;
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        log.info("product test");
+        return ResponseEntity.ok("product test");
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<AppResponse<PageResponse<ProductDto>>> findAll(
             @RequestParam(required = false, defaultValue = Const.DEFAULT_PAGE_NUMBER_STRING)
