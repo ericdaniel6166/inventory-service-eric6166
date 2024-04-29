@@ -28,7 +28,7 @@ public class KafkaConsumer {
         Span span = tracer.nextSpan().name("handleTestTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("testTopicAppEvent uuid", appEvent.getUuid());
-            log.info("handleTestTopicEvent, appEvent: {}", appEvent);
+            log.debug("handleTestTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
             span.error(e);
             throw new AppException(e);
@@ -47,7 +47,7 @@ public class KafkaConsumer {
         Span span = tracer.nextSpan().name("handleDefaultTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("defaultTopicEvent uuid", appEvent.getUuid());
-            log.info("handleDefaultTopicEvent, appEvent: {}", appEvent);
+            log.debug("handleDefaultTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
             span.error(e);
             throw new AppException(e);

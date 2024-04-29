@@ -37,7 +37,7 @@ public class ProductController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        log.info("product test");
+        log.debug("product test");
         return ResponseEntity.ok("product test");
     }
 
@@ -60,6 +60,7 @@ public class ProductController {
             }) String sortColumn,
             @RequestParam(required = false, defaultValue = Const.DEFAULT_SORT_DIRECTION)
             @ValidEnumString(value = Sort.Direction.class, caseSensitive = false) String sortDirection) {
+        log.debug("ProductController.findAll");
         var data = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
         if (!data.getPageable().isHasContent()) {
             return ResponseEntity.noContent().build();
