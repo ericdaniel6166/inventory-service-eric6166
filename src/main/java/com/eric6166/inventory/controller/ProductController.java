@@ -1,9 +1,9 @@
 package com.eric6166.inventory.controller;
 
 import com.eric6166.base.dto.AppResponse;
-import com.eric6166.common.utils.Const;
-import com.eric6166.common.validation.ValidEnumString;
-import com.eric6166.common.validation.ValidString;
+import com.eric6166.base.utils.Const;
+import com.eric6166.base.validation.ValidEnumString;
+import com.eric6166.base.validation.ValidString;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;

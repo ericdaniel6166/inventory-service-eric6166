@@ -2,8 +2,8 @@ package com.eric6166.inventory.config.kafka;
 
 import brave.Span;
 import brave.Tracer;
+import com.eric6166.base.exception.AppException;
 import com.eric6166.common.config.kafka.AppEvent;
-import com.eric6166.common.exception.AppException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
