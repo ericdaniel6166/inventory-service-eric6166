@@ -1,7 +1,7 @@
 package com.eric6166.inventory.controller;
 
 import com.eric6166.base.dto.AppResponse;
-import com.eric6166.base.utils.Const;
+import com.eric6166.base.utils.BaseConst;
 import com.eric6166.base.validation.ValidEnumString;
 import com.eric6166.base.validation.ValidString;
 import com.eric6166.inventory.dto.ProductDto;
@@ -44,13 +44,13 @@ public class ProductController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<AppResponse<PageResponse<ProductDto>>> findAll(
-            @RequestParam(required = false, defaultValue = Const.DEFAULT_PAGE_NUMBER_STRING)
-            @Min(value = Const.DEFAULT_PAGE_NUMBER)
-            @Max(value = Const.DEFAULT_MAX_INTEGER) Integer pageNumber,
-            @RequestParam(required = false, defaultValue = Const.DEFAULT_PAGE_SIZE_STRING)
-            @Min(value = Const.DEFAULT_PAGE_SIZE)
-            @Max(value = Const.MAXIMUM_PAGE_SIZE) Integer pageSize,
-            @RequestParam(required = false, defaultValue = Const.DEFAULT_SORT_COLUMN)
+            @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_PAGE_NUMBER_STRING)
+            @Min(value = BaseConst.DEFAULT_PAGE_NUMBER)
+            @Max(value = BaseConst.DEFAULT_MAX_INTEGER) Integer pageNumber,
+            @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_PAGE_SIZE_STRING)
+            @Min(value = BaseConst.DEFAULT_PAGE_SIZE)
+            @Max(value = BaseConst.MAXIMUM_PAGE_SIZE) Integer pageSize,
+            @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_SORT_COLUMN)
             @ValidString(values = {
                     Constants.SORT_COLUMN_ID,
                     Constants.SORT_COLUMN_NAME,
@@ -58,7 +58,7 @@ public class ProductController {
                     Constants.SORT_COLUMN_PRICE,
                     Constants.SORT_COLUMN_CATEGORY_ID,
             }) String sortColumn,
-            @RequestParam(required = false, defaultValue = Const.DEFAULT_SORT_DIRECTION)
+            @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_SORT_DIRECTION)
             @ValidEnumString(value = Sort.Direction.class, caseSensitive = false) String sortDirection) {
         log.debug("ProductController.findAll");
         var data = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
