@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
 
+
     ProductService productService;
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))

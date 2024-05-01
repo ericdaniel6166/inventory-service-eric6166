@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
+
     Tracer tracer;
 
     @KafkaListener(topics = "${spring.kafka.consumers.test-topic.topic-name}",
