@@ -3,28 +3,36 @@ app:
   server-port: 8083 # change
   application-version: v1
   context-path: api/${app.application-name}/${app.application-version}
-  database-hostname: localhost # change
-  database-port: 5434 # change
-  database-name: ${app.application-name}_service_${app.application-version}
-  eureka-hostname: localhost # change
-  eureka-port: 8761
-  keycloak-host: localhost # change
-  keycloak-port: 8090
-  api-gateway-hostname: localhost # change
-  swagger-api-gateway-hostname: localhost # change
-  api-gateway-server-port: 8181
-  swagger-info-title: Inventory Service # change
-  swagger-info-version: v1.0 # change
-  zipkin-hostname: localhost
-  zipkin-server-port: 9411
-  zipkin-context-path: api/v2/spans
-  zipkin-endpoint: http://${app.zipkin-hostname}:${app.zipkin-server-port}/${app.zipkin-context-path}
+  database:
+    hostname: localhost # change
+    port: 5434 # change
+    name: ${app.application-name}_service_${app.application-version}
+  eureka:
+    hostname: localhost # change
+    port: 8761
+  keycloak:
+    host: localhost # change
+    port: 8090
+  api-gateway:
+    hostname: localhost # change
+    server-port: 8181
+  swagger-api-gateway:
+    hostname: localhost # change
+  swagger-info:
+    title: Inventory Service # change
+    version: v1.0 # change
+  zipkin:
+    hostname: localhost
+    server-port: 9411
+    context-path: api/v2/spans
+    endpoint: http://${app.zipkin.hostname}:${app.zipkin.server-port}/${app.zipkin.context-path}
   #kafka
-  kafka-hostname: localhost
-  kafka-port: 9092
-  kafka-default-topic: default-topic
-  kafka-default-concurrency: 3
-  kafka-default-group-id: default-group-id
+  kafka:
+    hostname: localhost
+    port: 9092
+    default-topic: default-topic
+    default-concurrency: 3
+    default-group-id: default-group-id
 
 security:
   enabled: true
@@ -45,9 +53,9 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${app.keycloak-host}:${app.keycloak-port}/realms/spring-boot-microservices-realm
+          issuer-uri: http://${app.keycloak.host}:${app.keycloak.port}/realms/spring-boot-microservices-realm
   datasource:
-    url: jdbc:postgresql://${app.database-hostname}:${app.database-port}/${app.database-name}
+    url: jdbc:postgresql://${app.database.hostname}:${app.database.port}/${app.database.name}
     username: postgres
     password: secret
     driver-class-name: org.postgresql.Driver
@@ -62,12 +70,12 @@ spring:
     table: schema_history
   kafka:
     enabled: true
-    bootstrap-servers: ${app.kafka-hostname}:${app.kafka-port}
+    bootstrap-servers: ${app.kafka.hostname}:${app.kafka.port}
     template:
-      default-topic: ${app.kafka-default-topic}
-      default-group-id: ${app.kafka-default-group-id}
+      default-topic: ${app.kafka.default-topic}
+      default-group-id: ${app.kafka.default-group-id}
       properties:
-        default-concurrency: ${app.kafka-default-concurrency}
+        default-concurrency: ${app.kafka.default-concurrency}
     #    producers:
     #      test-topic:
     #        topic-name: test-topic
@@ -79,22 +87,22 @@ spring:
         topic-name: test-topic
         group-id: test-topic-${spring.application.name}
         properties:
-          concurrency: ${app.kafka-default-concurrency}
+          concurrency: ${app.kafka.default-concurrency}
   #      order-item-not-available:
   #        topic-name: order-item-not-available
   #        group-id: order-item-not-available-${spring.application.name}
   #        properties:
-  #          concurrency: ${app.kafka-default-concurrency}
+  #          concurrency: ${app.kafka.default-concurrency}
   #      order-processing:
   #        topic-name: order-processing
   #        group-id: order-processing-${spring.application.name}
   #        properties:
-  #          concurrency: ${app.kafka-default-concurrency}
+  #          concurrency: ${app.kafka.default-concurrency}
   #      order-payment-processing:
   #        topic-name: order-payment-processing
   #        group-id: order-payment-processing-${spring.application.name}
   #        properties:
-  #          concurrency: ${app.kafka-default-concurrency}
+  #          concurrency: ${app.kafka.default-concurrency}
 
 server:
   port: ${app.server-port}
@@ -106,7 +114,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${app.eureka-hostname}:${app.eureka-port}/eureka
+      defaultZone: http://${app.eureka.hostname}:${app.eureka.port}/eureka
     registry-fetch-interval-seconds: 5
   instance:
     lease-renewal-interval-in-seconds: 5
@@ -130,11 +138,11 @@ springdoc:
 
 swagger:
   server:
-    url: http://${app.swagger-api-gateway-hostname}:${app.api-gateway-server-port}/${app.context-path}
+    url: http://${app.swagger-api-gateway.hostname}:${app.api-gateway.server-port}/${app.context-path}
   info:
-    title: ${app.swagger-info-title}
-    version: ${app.swagger-info-version}
-    description: Documentation ${app.swagger-info-title} ${app.swagger-info-version}
+    title: ${app.swagger-info.title}
+    version: ${app.swagger-info.version}
+    description: Documentation ${app.swagger-info.title} ${app.swagger-info.version}
 #  security-scheme:
 #    name: bearerAuth
 #    bearer-format: JWT
@@ -176,4 +184,4 @@ management:
         include: "*"
   zipkin:
     tracing:
-      endpoint: ${app.zipkin-endpoint}
+      endpoint: ${app.zipkin.endpoint}

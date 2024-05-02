@@ -1,11 +1,16 @@
 app:
-  database-hostname: postgres-inventory
-  database-port: 5432
-  eureka-hostname: discovery-service
-  keycloak-host: keycloak
-  zipkin-hostname: zipkin
-  kafka-hostname: kafka
-  kafka-port: 29092
+  database:
+    hostname: postgres-inventory
+    port: 5432
+  eureka:
+    hostname: discovery-service
+  keycloak:
+    host: keycloak
+  zipkin:
+    hostname: zipkin
+  kafka:
+    hostname: kafka
+    port: 29092
 
 #spring:
 #  profiles:
