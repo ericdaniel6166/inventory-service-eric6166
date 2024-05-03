@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -17,7 +19,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductDto extends BaseEntity<String> {
+public class ProductDto extends BaseEntity<String> implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     Long id;
     String name;

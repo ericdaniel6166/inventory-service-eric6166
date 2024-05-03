@@ -7,7 +7,7 @@ public final class Constants {
     public static final String SORT_COLUMN_PRICE = "price";
     public static final String SORT_COLUMN_CATEGORY_ID = "categoryId";
 
-    public static final String CACHE_NAME_PRODUCT_FIND_BY_ID = "product.findById";
+    public static final String CACHE_NAME_PRODUCT_FIND_BY_ID = "inventory.product.findById";
 
     private Constants() {
         throw new IllegalStateException("Utility class");

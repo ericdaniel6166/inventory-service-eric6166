@@ -1,25 +1,37 @@
 package com.eric6166.inventory.controller;
 
 import com.eric6166.base.dto.AppResponse;
+import com.eric6166.base.dto.MessageResponse;
+import com.eric6166.base.exception.AppNotFoundException;
 import com.eric6166.base.utils.BaseConst;
 import com.eric6166.base.validation.ValidEnumString;
 import com.eric6166.base.validation.ValidString;
+import com.eric6166.inventory.dto.CreateProductRequest;
 import com.eric6166.inventory.dto.ProductDto;
+import com.eric6166.inventory.dto.UpdateProductRequest;
 import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
 import com.eric6166.jpa.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,5 +81,39 @@ public class ProductController {
         return ResponseEntity.ok(new AppResponse<>(data));
     }
 
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/{id}")
+    public ResponseEntity<AppResponse<ProductDto>> findById(@PathVariable @NotNull @Min(value = 1)
+                                                            @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id)
+            throws AppNotFoundException {
+        log.debug("ProductController.findById");
+        return ResponseEntity.ok(new AppResponse<>(productService.findById(id)));
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AppResponse<MessageResponse>> deleteById(@PathVariable @NotNull @Min(value = 1)
+                                                                   @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id)
+            throws AppNotFoundException {
+        log.debug("ProductController.findById");
+        productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @PutMapping
+    public ResponseEntity<AppResponse<MessageResponse>> update(@RequestBody @Valid UpdateProductRequest request)
+            throws AppNotFoundException {
+        log.debug("ProductController.update");
+        return ResponseEntity.ok(new AppResponse<>(productService.update(request)));
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping
+    public ResponseEntity<AppResponse<MessageResponse>> create(@RequestBody @Valid CreateProductRequest request) {
+        log.debug("ProductController.update");
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AppResponse<>(productService.create(request)));
+    }
 
 }
