@@ -64,6 +64,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0B
+      max-file-size: 100MB
+      max-request-size: 100MB
   cache:
     redis:
       time-to-live: 60000 #ms
