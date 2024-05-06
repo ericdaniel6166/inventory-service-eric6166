@@ -32,7 +32,7 @@ public class KafkaConsumer {
             log.debug("handleTestTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
             span.error(e);
-            throw new AppException(e);
+            throw e;
         } finally {
             span.finish();
         }
@@ -51,7 +51,7 @@ public class KafkaConsumer {
             log.debug("handleDefaultTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
             span.error(e);
-            throw new AppException(e);
+            throw e;
         } finally {
             span.finish();
         }
