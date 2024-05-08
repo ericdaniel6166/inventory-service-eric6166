@@ -1,6 +1,5 @@
 package com.eric6166.inventory.config.kafka;
 
-import brave.Span;
 import brave.Tracer;
 import com.eric6166.base.exception.AppException;
 import com.eric6166.common.config.kafka.AppEvent;
@@ -26,7 +25,7 @@ public class KafkaConsumer {
             concurrency = "${spring.kafka.consumers.test-topic.properties.concurrency}"
     )
     public void handleTestTopicEvent(AppEvent appEvent) throws AppException {
-        Span span = tracer.nextSpan().name("handleTestTopicEvent").start();
+        var span = tracer.nextSpan().name("handleTestTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("testTopicAppEvent uuid", appEvent.getUuid());
             log.debug("handleTestTopicEvent, appEvent: {}", appEvent);
@@ -45,7 +44,7 @@ public class KafkaConsumer {
             concurrency = "${spring.kafka.template.properties.default-concurrency}"
     )
     public void handleDefaultTopicEvent(AppEvent appEvent) throws AppException {
-        Span span = tracer.nextSpan().name("handleDefaultTopicEvent").start();
+        var span = tracer.nextSpan().name("handleDefaultTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("defaultTopicEvent uuid", appEvent.getUuid());
             log.debug("handleDefaultTopicEvent, appEvent: {}", appEvent);
