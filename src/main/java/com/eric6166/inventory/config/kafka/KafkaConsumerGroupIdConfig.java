@@ -18,8 +18,8 @@ public class KafkaConsumerGroupIdConfig {
     KafkaConsumerProps kafkaConsumerProps;
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> defaultTopicKafkaListenerContainerFactory() {
-        return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getDefaultTopicGroupId());
+    public ConcurrentKafkaListenerContainerFactory<String, Object> templateTopicKafkaListenerContainerFactory() {
+        return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getTemplateGroupId());
     }
 
     @Bean

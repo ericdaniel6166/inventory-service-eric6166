@@ -1,6 +1,7 @@
 package com.eric6166.inventory.config.kafka;
 
 import brave.Tracer;
+import brave.propagation.TraceContextOrSamplingFlags;
 import com.eric6166.base.exception.AppException;
 import com.eric6166.common.config.kafka.AppEvent;
 import lombok.AccessLevel;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-
     Tracer tracer;
 
     @KafkaListener(topics = "${spring.kafka.consumers.test-topic.topic-name}",
@@ -24,12 +24,13 @@ public class KafkaConsumer {
             containerFactory = "testTopicKafkaListenerContainerFactory",
             concurrency = "${spring.kafka.consumers.test-topic.properties.concurrency}"
     )
-    public void handleTestTopicEvent(AppEvent appEvent) throws AppException {
+    public void handleTestTopicEvent(AppEvent appEvent) {
         var span = tracer.nextSpan().name("handleTestTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("testTopicAppEvent uuid", appEvent.getUuid());
             log.info("handleTestTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
+            log.info("e: {} , errorMessage: {}", e.getClass().getName(), e.getMessage()); // comment // for local testing
             span.error(e);
             throw e;
         } finally {
@@ -38,17 +39,18 @@ public class KafkaConsumer {
 
     }
 
-    @KafkaListener(topics = "${spring.kafka.template.default-topic}",
-            groupId = "${spring.kafka.template.default-group-id}",
-            containerFactory = "defaultTopicKafkaListenerContainerFactory",
-            concurrency = "${spring.kafka.template.properties.default-concurrency}"
+    @KafkaListener(topics = "${spring.kafka.template.consumer.topic-name}",
+            groupId = "${spring.kafka.template.consumer.group-id}",
+            containerFactory = "templateTopicKafkaListenerContainerFactory",
+            concurrency = "${spring.kafka.template.consumer.properties.concurrency}"
     )
-    public void handleDefaultTopicEvent(AppEvent appEvent) throws AppException {
-        var span = tracer.nextSpan().name("handleDefaultTopicEvent").start();
+    public void handleTemplateTopicEvent(AppEvent appEvent) {
+        var span = tracer.nextSpan().name("handleTemplateTopicEvent").start();
         try (var ws = tracer.withSpanInScope(span)) {
-            span.tag("defaultTopicEvent uuid", appEvent.getUuid());
-            log.info("handleDefaultTopicEvent, appEvent: {}", appEvent);
+            span.tag("templateTopicEvent uuid", appEvent.getUuid());
+            log.info("handleTemplateTopicEvent, appEvent: {}", appEvent);
         } catch (RuntimeException e) {
+            log.info("e: {} , errorMessage: {}", e.getClass().getName(), e.getMessage()); // comment // for local testing
             span.error(e);
             throw e;
         } finally {

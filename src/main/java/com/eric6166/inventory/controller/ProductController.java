@@ -8,6 +8,7 @@ import com.eric6166.base.validation.ValidEnumString;
 import com.eric6166.base.validation.ValidString;
 import com.eric6166.inventory.dto.CreateProductRequest;
 import com.eric6166.inventory.dto.ProductDto;
+import com.eric6166.inventory.dto.TestCacheRequest;
 import com.eric6166.inventory.dto.UpdateProductRequest;
 import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
@@ -50,8 +51,21 @@ public class ProductController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        log.debug("product test");
         return ResponseEntity.ok("product test");
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping("/cache/test")
+    public ResponseEntity<String> cacheTest(@RequestBody TestCacheRequest testCacheRequest) {
+        productService.cacheTest(testCacheRequest);
+        return ResponseEntity.ok("cache test");
+    }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/cache/test")
+    public ResponseEntity<String> getCacheTest(@RequestParam(required = false) String cacheName, @RequestParam(required = false) String cacheKey) {
+        productService.getCacheTest(cacheName, cacheKey);
+        return ResponseEntity.ok("cache test");
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
@@ -73,7 +87,6 @@ public class ProductController {
             }) String sortColumn,
             @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_SORT_DIRECTION)
             @ValidEnumString(value = Sort.Direction.class, caseSensitive = false) String sortDirection) {
-        log.debug("ProductController.findAll");
         var data = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
         if (!data.getPageable().isHasContent()) {
             return ResponseEntity.noContent().build();
@@ -87,7 +100,6 @@ public class ProductController {
     public ResponseEntity<AppResponse<ProductDto>> findById(@PathVariable @NotNull @Min(value = 1)
                                                             @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id)
             throws AppNotFoundException {
-        log.debug("ProductController.findById");
         return ResponseEntity.ok(new AppResponse<>(productService.findById(id)));
     }
 
@@ -96,7 +108,6 @@ public class ProductController {
     public ResponseEntity<AppResponse<MessageResponse>> deleteById(@PathVariable @NotNull @Min(value = 1)
                                                                    @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id)
             throws AppNotFoundException {
-        log.debug("ProductController.findById");
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -105,14 +116,12 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<AppResponse<MessageResponse>> update(@RequestBody @Valid UpdateProductRequest request)
             throws AppNotFoundException {
-        log.debug("ProductController.update");
         return ResponseEntity.ok(new AppResponse<>(productService.update(request)));
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
     public ResponseEntity<AppResponse<MessageResponse>> create(@RequestBody @Valid CreateProductRequest request) {
-        log.debug("ProductController.update");
         return ResponseEntity.status(HttpStatus.CREATED).body(new AppResponse<>(productService.create(request)));
     }
 

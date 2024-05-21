@@ -5,12 +5,15 @@ app:
   eureka:
     hostname: discovery-service
   keycloak:
-    host: keycloak
+    hostname: keycloak
   zipkin:
     hostname: zipkin
   kafka:
     hostname: kafka
     port: 29092
+  redis:
+    hostname: redis
+
 
 #spring:
 #  profiles:
@@ -20,6 +23,4 @@ logging:
   level:
     root: INFO
     com.eric6166: INFO
-    org.hibernate.sql: DEBUG
-    org.hibernate.type.descriptor.sql : TRACE
     org.apache.http: INFO

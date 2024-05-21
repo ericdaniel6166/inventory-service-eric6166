@@ -18,7 +18,7 @@ public class KafkaConsumerProps {
     @Value("${spring.kafka.consumers.test-topic.group-id}")
     String testTopicGroupId;
 
-    @Value("${spring.kafka.template.default-group-id}")
-    String defaultTopicGroupId;
+    @Value("${spring.kafka.template.consumer.group-id}")
+    String templateGroupId;
 
 }

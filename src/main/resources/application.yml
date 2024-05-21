@@ -1,40 +1,42 @@
 app:
-  application-name: inventory # change
-  server-port: 8083 # change
-  application-version: v1
-  context-path: api/${app.application-name}/${app.application-version}
+  name: inventory # change
+  port: 8083 # change
+  version: v1
+  context-path: api/${app.name}/${app.version}
   database:
     hostname: localhost # change
     port: 5434 # change
-    name: ${app.application-name}_service_${app.application-version}
+    name: ${app.name}_service_${app.version}
   eureka:
     hostname: localhost # change
     port: 8761
   keycloak:
-    host: localhost # change
+    hostname: localhost # change
     port: 8090
-  api-gateway:
-    hostname: localhost # change
-    server-port: 8181
-  swagger-api-gateway:
-    hostname: localhost # change
-  swagger-info:
-    title: Inventory Service # change
-    version: v1.0 # change
+    issuer-uri: http://${app.keycloak.hostname}:${app.keycloak.port}/realms/spring-boot-microservices-realm
+  swagger:
+    server:
+      hostname: localhost
+      port: 8181
+      url: http://${app.swagger.server.hostname}:${app.swagger.server.port}/${app.context-path}
+    info:
+      title: Inventory Service # change
+      version: v1.0 # change
   zipkin:
     hostname: localhost
-    server-port: 9411
+    port: 9411
     context-path: api/v2/spans
-    endpoint: http://${app.zipkin.hostname}:${app.zipkin.server-port}/${app.zipkin.context-path}
-  #kafka
+    endpoint: http://${app.zipkin.hostname}:${app.zipkin.port}/${app.zipkin.context-path}
   kafka:
     hostname: localhost
     port: 9092
-    default-topic: default-topic
-    default-concurrency: 3
-    default-group-id: default-group-id
+    template:
+      consumer:
+        topic-name: default-topic
+        properties:
+          concurrency: 3
   redis:
-    host: localhost
+    hostname: localhost
     port: 6379
 
 security:
@@ -49,14 +51,14 @@ security:
 
 spring:
   application:
-    name: ${app.application-name}-service
+    name: ${app.name}-service
   profiles:
     active: local
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${app.keycloak.host}:${app.keycloak.port}/realms/spring-boot-microservices-realm
+          issuer-uri: ${app.keycloak.issuer-uri}
   datasource:
     url: jdbc:postgresql://${app.database.hostname}:${app.database.port}/${app.database.name}
     username: postgres
@@ -71,13 +73,14 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   cache:
+    enabled: true
     redis:
       time-to-live: 60000 #ms
     type: redis
   data:
     redis:
       enabled: true
-      host: ${app.redis.host}
+      hostname: ${app.redis.hostname}
       port: ${app.redis.port}
 
   flyway:
@@ -91,22 +94,17 @@ spring:
     enabled: true
     bootstrap-servers: ${app.kafka.hostname}:${app.kafka.port}
     template:
-      default-topic: ${app.kafka.default-topic}
-      default-group-id: ${app.kafka.default-group-id}
-      properties:
-        default-concurrency: ${app.kafka.default-concurrency}
-    #    producers:
-    #      test-topic:
-    #        topic-name: test-topic
-    #      order-pending:
-    #        topic-name: order-pending
-
+      consumer:
+        topic-name: ${app.kafka.template.consumer.topic-name}
+        group-id: ${app.kafka.template.consumer.topic-name}-${spring.application.name}
+        properties:
+          concurrency: ${app.kafka.template.consumer.properties.concurrency}
     consumers:
       test-topic:
         topic-name: test-topic
         group-id: test-topic-${spring.application.name}
         properties:
-          concurrency: ${app.kafka.default-concurrency}
+          concurrency: ${app.kafka.template.consumer.properties.concurrency}
   #      order-item-not-available:
   #        topic-name: order-item-not-available
   #        group-id: order-item-not-available-${spring.application.name}
@@ -124,7 +122,7 @@ spring:
   #          concurrency: ${app.kafka.default-concurrency}
 
 server:
-  port: ${app.server-port}
+  port: ${app.port}
   servlet:
     context-path: /${app.context-path}
 
@@ -143,9 +141,11 @@ logging:
   level:
     root: INFO
     com.eric6166: DEBUG
+    org.apache.http: DEBUG
     org.hibernate.sql: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
-    org.apache.http: DEBUG
+    org.springframework.kafka: WARN
+    org.apache.kafka: WARN
   pattern:
     level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
@@ -157,28 +157,11 @@ springdoc:
 
 swagger:
   server:
-    url: http://${app.swagger-api-gateway.hostname}:${app.api-gateway.server-port}/${app.context-path}
+    url: ${app.swagger.server.url}
   info:
-    title: ${app.swagger-info.title}
-    version: ${app.swagger-info.version}
-    description: Documentation ${app.swagger-info.title} ${app.swagger-info.version}
-#  security-scheme:
-#    name: bearerAuth
-#    bearer-format: JWT
-#    scheme: bearer
-
-#management:
-#  health:
-#    circuitbreakers:
-#      enabled: true
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#  endpoint:
-#    health:
-#      show-details: always
-
+    title: ${app.swagger.info.title}
+    version: ${app.swagger.info.version}
+    description: Documentation ${app.swagger.info.title} ${app.swagger.info.version}
 
 management:
   tracing:
