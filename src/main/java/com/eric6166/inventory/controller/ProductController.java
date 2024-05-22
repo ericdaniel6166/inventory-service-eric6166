@@ -45,7 +45,6 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
 
-
     ProductService productService;
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
@@ -87,11 +86,11 @@ public class ProductController {
             }) String sortColumn,
             @RequestParam(required = false, defaultValue = BaseConst.DEFAULT_SORT_DIRECTION)
             @ValidEnumString(value = Sort.Direction.class, caseSensitive = false) String sortDirection) {
-        try {
-            Thread.sleep(120000);
-        } catch (InterruptedException e) {
-
-        }
+//        try {
+//            Thread.sleep(120000);
+//        } catch (InterruptedException e) {
+//
+//        }
         var data = productService.findAll(pageNumber, pageSize, sortColumn, sortDirection);
         if (!data.getPageable().isHasContent()) {
             return ResponseEntity.noContent().build();
