@@ -4,12 +4,12 @@ import com.eric6166.base.dto.AppResponse;
 import com.eric6166.base.utils.TestConst;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.service.ProductService;
+import com.eric6166.inventory.utils.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 @WebMvcTest(controllers = {ProductController.class})
@@ -33,21 +32,17 @@ import java.nio.charset.StandardCharsets;
 class ProductControllerTest {
 
     private static final String URL_TEMPLATE = "/product";
-
+    private static ProductDto productDto;
     @Autowired
     MockMvc mvc;
-
     @Autowired
     ObjectMapper objectMapper;
-
     @MockBean
     ProductService productService;
 
-    private static ProductDto productDto;
-
     @BeforeAll
     static void setUpAll() {
-        productDto = mockProductDto();
+        productDto = TestUtils.mockProductDto(TestUtils.mockProduct());
     }
 
 //    @BeforeEach
@@ -58,21 +53,13 @@ class ProductControllerTest {
 //    void tearDown() {
 //    }
 
-    private static ProductDto mockProductDto() {
-        return ProductDto.builder()
-                .id(RandomUtils.nextLong(1, 100))
-                .categoryId(RandomUtils.nextLong(1, 100))
-                .description(RandomStringUtils.randomAlphabetic(10))
-                .name(RandomStringUtils.randomAlphabetic(10))
-                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 100)))
-                .build();
-    }
 
     @Test
     void findById() throws Exception {
         var id = productDto.getId();
         var expected = new AppResponse<>(productDto);
         Mockito.when(productService.findById(id)).thenReturn(productDto);
+
         mvc.perform(MockMvcRequestBuilders
                         .get(URL_TEMPLATE + "/" + id)
                         .with(SecurityMockMvcRequestPostProcessors
@@ -90,6 +77,7 @@ class ProductControllerTest {
         var id = productDto.getId();
         var expected = new AppResponse<>(productDto);
         Mockito.when(productService.findById(id)).thenReturn(productDto);
+
         mvc.perform(MockMvcRequestBuilders
                         .get(URL_TEMPLATE + "/" + id)
                         .with(SecurityMockMvcRequestPostProcessors
@@ -105,6 +93,7 @@ class ProductControllerTest {
     @Test
     void findById_thenReturnUnauthorized() throws Exception {
         var id = productDto.getId();
+
         mvc.perform(MockMvcRequestBuilders
                         .get(URL_TEMPLATE + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -118,6 +107,7 @@ class ProductControllerTest {
         var servletException = Assertions.assertThrows(ServletException.class,
                 () -> {
                     var id = -RandomUtils.nextLong(0, 100);
+
                     mvc.perform(MockMvcRequestBuilders
                             .get(URL_TEMPLATE + "/" + id)
                             .with(SecurityMockMvcRequestPostProcessors
@@ -127,8 +117,11 @@ class ProductControllerTest {
                             .accept(MediaType.APPLICATION_JSON_VALUE)
                             .characterEncoding(StandardCharsets.UTF_8));
                 });
+
+        var expected = "findById.id: must be greater than or equal to 1";
+
         Assertions.assertTrue(servletException.getCause() instanceof ConstraintViolationException);
-        Assertions.assertEquals(servletException.getCause().getMessage(), "findById.id: must be greater than or equal to 1");
+        Assertions.assertEquals(expected, servletException.getCause().getMessage());
     }
 
 }
