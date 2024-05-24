@@ -14,20 +14,6 @@ public final class TestUtils {
         throw new IllegalStateException("Utility class");
     }
 
-//    public static ProductDto mockProductDto() {
-//        return ProductDto.builder()
-//                .id(RandomUtils.nextLong(1, 100))
-//                .categoryId(RandomUtils.nextLong(1, 100))
-//                .description(RandomStringUtils.randomAlphabetic(10))
-//                .name(RandomStringUtils.randomAlphabetic(10))
-//                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 10000)))
-//                .createdBy(RandomStringUtils.randomAlphabetic(10))
-//                .createdDate(LocalDateTime.now())
-//                .lastModifiedBy(RandomStringUtils.randomAlphabetic(10))
-//                .lastModifiedDate(LocalDateTime.now())
-//                .build();
-//    }
-
     public static ProductDto mockProductDto(Product product) {
         return ProductDto.builder()
                 .id(product.getId())
@@ -43,9 +29,13 @@ public final class TestUtils {
     }
 
     public static Product mockProduct() {
+        return mockProduct(RandomUtils.nextLong(), RandomUtils.nextLong());
+    }
+
+    public static Product mockProduct(Long id, Long categoryId) {
         return Product.builder()
-                .id(RandomUtils.nextLong(1, 100))
-                .categoryId(RandomUtils.nextLong(1, 100))
+                .id(id)
+                .categoryId(categoryId)
                 .description(RandomStringUtils.randomAlphabetic(10))
                 .name(RandomStringUtils.randomAlphabetic(10))
                 .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 10000)))
@@ -55,4 +45,23 @@ public final class TestUtils {
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
     }
+
+//    public static Product mockProduct(Long id, Long categoryId) {
+//        return mockProduct(id, categoryId, RandomStringUtils.randomAlphabetic(10),
+//                RandomStringUtils.randomAlphabetic(10), LocalDateTime.now());
+//    }
+//
+//    public static Product mockProduct(Long id, Long categoryId, String name, String lastModifiedBy,LocalDateTime lastModifiedDate) {
+//        return Product.builder()
+//                .id(id)
+//                .categoryId(categoryId)
+//                .description(RandomStringUtils.randomAlphabetic(10))
+//                .name(name)
+//                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 10000)))
+//                .createdBy(RandomStringUtils.randomAlphabetic(10))
+//                .createdDate(LocalDateTime.now())
+//                .lastModifiedBy(RandomStringUtils.randomAlphabetic(10))
+//                .lastModifiedDate(LocalDateTime.now())
+//                .build();
+//    }
 }
