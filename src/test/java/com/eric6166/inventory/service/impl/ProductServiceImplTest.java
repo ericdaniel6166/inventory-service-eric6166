@@ -13,7 +13,6 @@ import com.eric6166.jpa.dto.PageResponse;
 import com.eric6166.jpa.utils.PageUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,9 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +54,20 @@ class ProductServiceImplTest {
         productDto1 = TestUtils.mockProductDto(product1);
 
     }
+
+//    @BeforeEach
+//    void setUp() {
+//    }
+//
+//    @AfterEach
+//    void tearDown() {
+//    }//    @BeforeEach
+////    void setUp() {
+////    }
+////
+////    @AfterEach
+////    void tearDown() {
+////    }
 
     @Test
     void deleteById_thenThrowAppNotFoundException() {
@@ -143,7 +154,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void findAll_givenSortColumnCategoryIdAndSortDirectionAsc_thenReturnSuccess() {
+    void findAll_givenSortColumnCategoryId_thenReturnSuccess() {
         var pageNumber = RandomUtils.nextInt();
         var pageSize = RandomUtils.nextInt();
         var sortColumn = "categoryId";
@@ -163,7 +174,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void findAll_givenSortColumnIdAndSortDirectionAsc_thenReturnSuccess() {
+    void findAll_givenSortColumnId_thenReturnSuccess() {
         var pageNumber = RandomUtils.nextInt();
         var pageSize = RandomUtils.nextInt();
         var sortColumn = "id";
@@ -181,14 +192,6 @@ class ProductServiceImplTest {
 
         Assertions.assertEquals(expected.getContent(), actual.getContent());
     }
-
-//    @BeforeEach
-//    void setUp() {
-//    }
-//
-//    @AfterEach
-//    void tearDown() {
-//    }
 
     @Test
     void findById_thenThrowAppNotFoundException() {
