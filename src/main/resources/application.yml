@@ -99,7 +99,17 @@ spring:
         group-id: ${app.kafka.template.consumer.topic-name}-${spring.application.name}
         properties:
           concurrency: ${app.kafka.template.consumer.properties.concurrency}
+    producers:
+      item-not-available:
+        topic-name: item-not-available
+      inventory-checked:
+        topic-name: inventory-checked
     consumers:
+      place-order:
+        topic-name: place-order
+        group-id: place-order-${spring.application.name}
+        properties:
+          concurrency: ${app.kafka.template.consumer.properties.concurrency}
       test-topic:
         topic-name: test-topic
         group-id: test-topic-${spring.application.name}

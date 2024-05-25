@@ -27,4 +27,9 @@ public class KafkaConsumerGroupIdConfig {
         return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getTestTopicGroupId());
     }
 
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> placeOrderKafkaListenerContainerFactory() {
+        return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getPlaceOrderGroupId());
+    }
+
 }

@@ -1,9 +1,8 @@
 package com.eric6166.inventory.config.kafka;
 
 import brave.Tracer;
-import brave.propagation.TraceContextOrSamplingFlags;
-import com.eric6166.base.exception.AppException;
 import com.eric6166.common.config.kafka.AppEvent;
+import com.eric6166.inventory.service.InventoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
 
     Tracer tracer;
+    InventoryService inventoryService;
 
     @KafkaListener(topics = "${spring.kafka.consumers.test-topic.topic-name}",
             groupId = "${spring.kafka.consumers.test-topic.group-id}",
@@ -29,6 +29,27 @@ public class KafkaConsumer {
         try (var ws = tracer.withSpanInScope(span)) {
             span.tag("testTopicAppEvent uuid", appEvent.getUuid());
             log.info("handleTestTopicEvent, appEvent: {}", appEvent);
+        } catch (RuntimeException e) {
+            log.info("e: {} , errorMessage: {}", e.getClass().getName(), e.getMessage()); // comment // for local testing
+            span.error(e);
+            throw e;
+        } finally {
+            span.finish();
+        }
+
+    }
+
+    @KafkaListener(topics = "${spring.kafka.consumers.place-order.topic-name}",
+            groupId = "${spring.kafka.consumers.place-order.group-id}",
+            containerFactory = "placeOrderKafkaListenerContainerFactory",
+            concurrency = "${spring.kafka.consumers.place-order.properties.concurrency}"
+    )
+    public void handlePlaceOrderEvent(AppEvent appEvent) {
+        var span = tracer.nextSpan().name("handlePlaceOrderEvent").start();
+        try (var ws = tracer.withSpanInScope(span)) {
+            span.tag("placeOrderEvent uuid", appEvent.getUuid());
+            log.info("handlePlaceOrderEvent, appEvent: {}", appEvent);
+            inventoryService.handlePlaceOrderEvent(appEvent);
         } catch (RuntimeException e) {
             log.info("e: {} , errorMessage: {}", e.getClass().getName(), e.getMessage()); // comment // for local testing
             span.error(e);

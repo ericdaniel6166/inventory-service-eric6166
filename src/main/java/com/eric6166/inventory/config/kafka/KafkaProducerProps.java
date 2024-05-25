@@ -13,15 +13,13 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true")
-public class KafkaConsumerProps {
+public class KafkaProducerProps {
 
-    @Value("${spring.kafka.consumers.test-topic.group-id}")
-    String testTopicGroupId;
+    @Value("${spring.kafka.producers.item-not-available.topic-name}")
+    String itemNotAvailableTopicName;
 
-    @Value("${spring.kafka.consumers.place-order.group-id}")
-    String placeOrderGroupId;
+    @Value("${spring.kafka.producers.inventory-checked.topic-name}")
+    String inventoryCheckedTopicName;
 
-    @Value("${spring.kafka.template.consumer.group-id}")
-    String templateGroupId;
 
 }

@@ -2,26 +2,26 @@ BEGIN;
 
 
 INSERT INTO CATEGORY (NAME, CREATED_BY, CREATED_DATE, LAST_MODIFIED_BY, LAST_MODIFIED_DATE)
-VALUES ('Electronics', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Clothing', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Home & Garden', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Toys & Games', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Sports & Outdoors', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Books', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Furniture', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Jewelry', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Health & Beauty', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
-       ('Food', 'product-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
-        'product-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year');
+VALUES ('Electronics', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Clothing', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Home & Garden', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Toys & Games', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Sports & Outdoors', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Books', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Furniture', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Jewelry', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Health & Beauty', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year'),
+       ('Food', 'inventory-service-v1.0', NOW() - INTERVAL '8 year' + RANDOM() * INTERVAL '1 year',
+        'inventory-service-v1.0', NOW() - INTERVAL '6 year' + RANDOM() * INTERVAL '1 year');
 
 
 CREATE TEMP TABLE IF NOT EXISTS CATEGORY_ASSIGNMENTS AS
@@ -40,7 +40,7 @@ SELECT P.PRODUCT_ID,
            END                               AS CATEGORY_ID,
        CASE
            WHEN P.PRODUCT_ID % 10 = 1 THEN 'iPhone'
-           WHEN P.PRODUCT_ID % 10 = 2 THEN 'Designer Jeans'
+           WHEN P.PRODUCT_ID % 10 = 2 THEN 'Jeans'
            WHEN P.PRODUCT_ID % 10 = 3 THEN 'LED TV'
            WHEN P.PRODUCT_ID % 10 = 4 THEN 'Toy Train Set'
            WHEN P.PRODUCT_ID % 10 = 5 THEN 'Football'
@@ -58,14 +58,28 @@ INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CREATED_BY, CREATED_DATE, LAST_MO
 SELECT CA.PRODUCT_NAME,
        'Description for ' || CA.PRODUCT_NAME,
        (RANDOM() * 1000)::NUMERIC(19, 4),
-       'product-service-v1.0',
+       'inventory-service-v1.0',
        NOW() - INTERVAL '4 year' + RANDOM() * INTERVAL '1 year',
-       'product-service-v1.0',
+       'inventory-service-v1.0',
        NOW() - INTERVAL '2 year' + RANDOM() * INTERVAL '1 year',
        CATEGORY_ID
 FROM CATEGORY_ASSIGNMENTS CA;
 
 
 DROP TABLE IF EXISTS CATEGORY_ASSIGNMENTS;
+
+CREATE TEMP TABLE IF NOT EXISTS PRODUCT_IDS AS
+SELECT ID AS PRODUCT_ID
+FROM PRODUCT;
+
+
+INSERT INTO INVENTORY (PRODUCT_ID, QUANTITY, CREATED_BY, CREATED_DATE, LAST_MODIFIED_BY, LAST_MODIFIED_DATE)
+SELECT PI.PRODUCT_ID,
+       (FLOOR(RANDOM() * 10000) + 1)::INTEGER                   AS QUANTITY,
+       'inventory-service-v1.0'                                 AS CREATED_BY,
+       NOW() - INTERVAL '4 year' + RANDOM() * INTERVAL '1 year' AS CREATED_DATE,
+       'inventory-service-v1.0'                                 AS LAST_MODIFIED_BY,
+       NOW() - INTERVAL '2 year' + RANDOM() * INTERVAL '1 year' AS LAST_MODIFIED_DATE
+FROM PRODUCT_IDS PI;
 
 COMMIT;
