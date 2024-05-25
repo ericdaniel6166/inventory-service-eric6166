@@ -15,5 +15,5 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
             inner join Inventory i on p.id = i.productId 
             where p.id in :productIdList
             """)
-    List<InventoryDto> findAllInventoryByProductIdIn(Iterable<Long> productIdList);
+    List<InventoryDto> findAllInventoryByProductIdIn(Iterable<Long> productIds);
 }
