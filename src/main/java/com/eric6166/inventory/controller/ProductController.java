@@ -47,25 +47,25 @@ public class ProductController {
 
     ProductService productService;
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("product test");
-    }
+//    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+//    @GetMapping("/test")
+//    public ResponseEntity<String> test() {
+//        return ResponseEntity.ok("product test");
+//    }
+//
+//    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+//    @PostMapping("/cache/test")
+//    public ResponseEntity<String> cacheTest(@RequestBody TestCacheRequest testCacheRequest) {
+//        productService.cacheTest(testCacheRequest);
+//        return ResponseEntity.ok("cache test");
+//    }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @PostMapping("/cache/test")
-    public ResponseEntity<String> cacheTest(@RequestBody TestCacheRequest testCacheRequest) {
-        productService.cacheTest(testCacheRequest);
-        return ResponseEntity.ok("cache test");
-    }
-
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping("/cache/test")
-    public ResponseEntity<String> getCacheTest(@RequestParam(required = false) String cacheName, @RequestParam(required = false) String cacheKey) {
-        productService.getCacheTest(cacheName, cacheKey);
-        return ResponseEntity.ok("cache test");
-    }
+//    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+//    @GetMapping("/cache/test")
+//    public ResponseEntity<String> getCacheTest(@RequestParam(required = false) String cacheName, @RequestParam(required = false) String cacheKey) {
+//        productService.getCacheTest(cacheName, cacheKey);
+//        return ResponseEntity.ok("cache test");
+//    }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping

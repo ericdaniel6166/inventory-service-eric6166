@@ -1,5 +1,7 @@
 package com.eric6166.inventory.utils;
 
+import com.eric6166.inventory.dto.InventoryDto;
+import com.eric6166.inventory.dto.PlaceOrderEventPayload;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.model.Product;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -28,10 +30,6 @@ public final class TestUtils {
                 .build();
     }
 
-    public static Product mockProduct() {
-        return mockProduct(RandomUtils.nextLong(), RandomUtils.nextLong());
-    }
-
     public static Product mockProduct(Long id, Long categoryId) {
         return Product.builder()
                 .id(id)
@@ -46,22 +44,20 @@ public final class TestUtils {
                 .build();
     }
 
-//    public static Product mockProduct(Long id, Long categoryId) {
-//        return mockProduct(id, categoryId, RandomStringUtils.randomAlphabetic(10),
-//                RandomStringUtils.randomAlphabetic(10), LocalDateTime.now());
-//    }
-//
-//    public static Product mockProduct(Long id, Long categoryId, String name, String lastModifiedBy,LocalDateTime lastModifiedDate) {
-//        return Product.builder()
-//                .id(id)
-//                .categoryId(categoryId)
-//                .description(RandomStringUtils.randomAlphabetic(10))
-//                .name(name)
-//                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 10000)))
-//                .createdBy(RandomStringUtils.randomAlphabetic(10))
-//                .createdDate(LocalDateTime.now())
-//                .lastModifiedBy(RandomStringUtils.randomAlphabetic(10))
-//                .lastModifiedDate(LocalDateTime.now())
-//                .build();
-//    }
+    public static PlaceOrderEventPayload.Item mockPlaceOrderEventPayloadItem(Long productId, Integer orderQuantity) {
+        return PlaceOrderEventPayload.Item.builder()
+                .orderQuantity(orderQuantity)
+                .productId(productId)
+                .build();
+    }
+
+    public static InventoryDto mockInventoryDto(Long productId, Long inventoryId, Integer inventoryQuantity, BigDecimal productPrice) {
+        return InventoryDto.builder()
+                .inventoryId(inventoryId)
+                .inventoryQuantity(inventoryQuantity)
+                .productId(productId)
+                .productPrice(productPrice)
+                .build();
+    }
+
 }
