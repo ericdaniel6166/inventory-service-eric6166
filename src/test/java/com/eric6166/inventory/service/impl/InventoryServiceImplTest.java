@@ -2,7 +2,6 @@ package com.eric6166.inventory.service.impl;
 
 import com.eric6166.common.config.kafka.AppEvent;
 import com.eric6166.inventory.config.kafka.KafkaProducerProps;
-import com.eric6166.inventory.dto.ItemNotAvailableEventPayload;
 import com.eric6166.inventory.dto.PlaceOrderEventPayload;
 import com.eric6166.inventory.repository.InventoryRepository;
 import com.eric6166.inventory.utils.TestUtils;
@@ -22,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,7 +62,7 @@ class InventoryServiceImplTest {
     }
 
     @Test
-    void handlePlaceOrderEvent_thenSendItemNotAvailableEvent() {
+    void handlePlaceOrderEvent_givenOrderQuantityGreaterThanInventoryQuantity_thenSendItemNotAvailableEvent() {
         var orderUuid = UUID.randomUUID().toString();
         var payload = PlaceOrderEventPayload.builder()
                 .orderUuid(orderUuid)
@@ -90,6 +90,38 @@ class InventoryServiceImplTest {
         Mockito.when(modelMapper.map(appEvent.getPayload(), PlaceOrderEventPayload.class)).thenReturn(payload);
         Mockito.when(kafkaProducerProps.getItemNotAvailableTopicName()).thenReturn(topicName);
         Mockito.when(inventoryRepository.findAllInventoryByProductIdIn(productIds)).thenReturn(inventoryDtoList);
+
+        inventoryService.handlePlaceOrderEvent(appEvent);
+
+        Mockito.verify(inventoryRepository, Mockito.times(1)).findAllInventoryByProductIdIn(productIds);
+        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any());
+    }
+
+    @Test
+    void handlePlaceOrderEvent_givenInventoryDtoNotFound_thenSendItemNotAvailableEvent() {
+        var orderUuid = UUID.randomUUID().toString();
+        var payload = PlaceOrderEventPayload.builder()
+                .orderUuid(orderUuid)
+                .username("customer")
+                .itemList(List.of(item, item1))
+                .build();
+        var appEvent = AppEvent.builder()
+                .uuid(UUID.randomUUID().toString())
+                .payload(payload)
+                .build();
+
+        var productIds = payload.getItemList().stream()
+                .map(PlaceOrderEventPayload.Item::getProductId)
+                .toList();
+        var inventoryDto1 = TestUtils.mockInventoryDto(item1.getProductId(), RandomUtils.nextLong(1, 100),
+                RandomUtils.nextInt(item1.getOrderQuantity(), 10000),
+                BigDecimal.valueOf(RandomUtils.nextDouble(1, 100000)));
+
+        var topicName = "item-not-available";
+
+        Mockito.when(modelMapper.map(appEvent.getPayload(), PlaceOrderEventPayload.class)).thenReturn(payload);
+        Mockito.when(kafkaProducerProps.getItemNotAvailableTopicName()).thenReturn(topicName);
+        Mockito.when(inventoryRepository.findAllInventoryByProductIdIn(productIds)).thenReturn(Collections.singletonList(inventoryDto1));
 
         inventoryService.handlePlaceOrderEvent(appEvent);
 

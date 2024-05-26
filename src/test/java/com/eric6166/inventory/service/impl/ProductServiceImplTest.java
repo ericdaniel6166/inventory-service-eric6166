@@ -2,6 +2,7 @@ package com.eric6166.inventory.service.impl;
 
 import com.eric6166.base.dto.MessageResponse;
 import com.eric6166.base.exception.AppNotFoundException;
+import com.eric6166.base.utils.BaseConst;
 import com.eric6166.common.config.cache.AppCacheManager;
 import com.eric6166.inventory.dto.CreateProductRequest;
 import com.eric6166.inventory.dto.ProductDto;
@@ -155,8 +156,8 @@ class ProductServiceImplTest {
 
     @Test
     void findAll_givenSortColumnCategoryId_thenReturnSuccess() {
-        var pageNumber = RandomUtils.nextInt();
-        var pageSize = RandomUtils.nextInt();
+        var pageNumber = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_NUMBER, BaseConst.DEFAULT_MAX_INTEGER);
+        var pageSize = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_SIZE, BaseConst.MAXIMUM_PAGE_SIZE);
         var sortColumn = "categoryId";
         var sortDirection = "asc";
         var pageable = PageUtils.buildPageable(pageNumber, pageSize, sortColumn, sortDirection);
@@ -175,8 +176,8 @@ class ProductServiceImplTest {
 
     @Test
     void findAll_givenSortColumnId_thenReturnSuccess() {
-        var pageNumber = RandomUtils.nextInt();
-        var pageSize = RandomUtils.nextInt();
+        var pageNumber = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_NUMBER, BaseConst.DEFAULT_MAX_INTEGER);
+        var pageSize = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_SIZE, BaseConst.MAXIMUM_PAGE_SIZE);
         var sortColumn = "id";
         var sortDirection = "asc";
         var pageable = PageUtils.buildPageable(pageNumber, pageSize, sortColumn, sortDirection);

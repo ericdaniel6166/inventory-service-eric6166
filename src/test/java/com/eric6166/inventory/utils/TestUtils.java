@@ -36,7 +36,7 @@ public final class TestUtils {
                 .categoryId(categoryId)
                 .description(RandomStringUtils.randomAlphabetic(10))
                 .name(RandomStringUtils.randomAlphabetic(10))
-                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 10000)))
+                .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 100000)))
                 .createdBy(RandomStringUtils.randomAlphabetic(10))
                 .createdDate(LocalDateTime.now())
                 .lastModifiedBy(RandomStringUtils.randomAlphabetic(10))

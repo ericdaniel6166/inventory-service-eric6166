@@ -66,7 +66,7 @@ class ProductControllerTest {
     void findAll_givenPageNumberLessThan1_thenThrowConstraintViolationException() throws Exception {
         var servletException = Assertions.assertThrows(ServletException.class,
                 () -> {
-                    var pageNumber = -RandomUtils.nextInt(0, 100);
+                    var pageNumber = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_NUMBER, BaseConst.DEFAULT_MAX_INTEGER);
                     var pageSize = RandomUtils.nextInt(BaseConst.DEFAULT_PAGE_SIZE, BaseConst.MAXIMUM_PAGE_SIZE);
                     var sortColumn = Constants.SORT_COLUMN_ID;
                     var sortDirection = BaseConst.DEFAULT_SORT_DIRECTION;
