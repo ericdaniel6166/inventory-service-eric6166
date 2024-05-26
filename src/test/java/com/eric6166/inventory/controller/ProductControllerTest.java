@@ -201,7 +201,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void findById_thenThrowConstraintViolationException() {
+    void findById_givenIdLessThan1_thenThrowConstraintViolationException() {
         var servletException = Assertions.assertThrows(ServletException.class,
                 () -> {
                     var id = -RandomUtils.nextLong(0, 100);

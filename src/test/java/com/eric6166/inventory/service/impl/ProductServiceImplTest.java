@@ -71,7 +71,7 @@ class ProductServiceImplTest {
 ////    }
 
     @Test
-    void deleteById_thenThrowAppNotFoundException() {
+    void deleteById_givenProductNotFound_thenThrowAppNotFoundException() {
         var id = RandomUtils.nextLong(1, 100);
         var e = Assertions.assertThrows(AppNotFoundException.class,
                 () -> {
@@ -116,7 +116,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void update_thenThrowAppNotFoundException() {
+    void update_givenProductNotFound_thenThrowAppNotFoundException() {
         var id = RandomUtils.nextLong(1, 100);
         var request = UpdateProductRequest.builder()
                 .id(id)
@@ -195,7 +195,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void findById_thenThrowAppNotFoundException() {
+    void findById_givenProductNotFound_thenThrowAppNotFoundException() {
         var id = RandomUtils.nextLong(1, 100);
         var e = Assertions.assertThrows(AppNotFoundException.class,
                 () -> {
