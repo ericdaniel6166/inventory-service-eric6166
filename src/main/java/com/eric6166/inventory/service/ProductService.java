@@ -19,7 +19,7 @@ public interface ProductService {
 
     void deleteById(Long id) throws AppNotFoundException;
 
-//    void cacheTest(TestCacheRequest testCacheRequest);
-//
-//    void getCacheTest(String cacheName, String cacheKey);
+    void cacheTest(TestCacheRequest testCacheRequest);
+
+    void getCacheTest(String cacheName, String cacheKey);
 }

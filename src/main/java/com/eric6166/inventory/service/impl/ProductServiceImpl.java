@@ -90,32 +90,32 @@ public class ProductServiceImpl implements ProductService {
         appCacheManager.evict(Constants.CACHE_NAME_PRODUCT_FIND_BY_ID, id);
     }
 
-//    @Override
-//    public void cacheTest(TestCacheRequest testCacheRequest) {
-//        if (StringUtils.isBlank(testCacheRequest.getCacheName())) {
-//            appCacheManager.clear();
-//        } else if (StringUtils.isBlank(testCacheRequest.getCacheKey())) {
-//            appCacheManager.clear(testCacheRequest.getCacheName());
-//        } else {
-//            appCacheManager.evict(testCacheRequest.getCacheName(), testCacheRequest.getCacheKey());
-//        }
-//    }
-//
-//    @Override
-//    public void getCacheTest(String cacheName, String cacheKey) {
-//        if (StringUtils.isBlank(cacheName)) {
-//            var cacheNames = appCacheManager.getCacheNames();
-//            log.info("cacheNames: {}", cacheNames.toString());
-//        } else if (StringUtils.isBlank(cacheKey)) {
-//            var cache = appCacheManager.getCache(cacheName);
-//        } else {
-//            var valueWrapper = appCacheManager.getCache(cacheName, cacheKey);
-//            if (valueWrapper != null) {
-//                Object o = valueWrapper.get();
-//                if (o instanceof ProductDto dto) {
-//                    log.info("cache value: {}", dto);
-//                }
-//            }
-//        }
-//    }
+    @Override
+    public void cacheTest(TestCacheRequest testCacheRequest) {
+        if (StringUtils.isBlank(testCacheRequest.getCacheName())) {
+            appCacheManager.clear();
+        } else if (StringUtils.isBlank(testCacheRequest.getCacheKey())) {
+            appCacheManager.clear(testCacheRequest.getCacheName());
+        } else {
+            appCacheManager.evict(testCacheRequest.getCacheName(), testCacheRequest.getCacheKey());
+        }
+    }
+
+    @Override
+    public void getCacheTest(String cacheName, String cacheKey) {
+        if (StringUtils.isBlank(cacheName)) {
+            var cacheNames = appCacheManager.getCacheNames();
+            log.info("cacheNames: {}", cacheNames.toString());
+        } else if (StringUtils.isBlank(cacheKey)) {
+            var cache = appCacheManager.getCache(cacheName);
+        } else {
+            var valueWrapper = appCacheManager.getCache(cacheName, cacheKey);
+            if (valueWrapper != null) {
+                Object o = valueWrapper.get();
+                if (o instanceof ProductDto dto) {
+                    log.info("cache value: {}", dto);
+                }
+            }
+        }
+    }
 }
