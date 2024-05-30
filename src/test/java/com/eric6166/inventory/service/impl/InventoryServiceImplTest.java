@@ -31,8 +31,6 @@ class InventoryServiceImplTest {
 
     private static PlaceOrderEventPayload.Item item;
     private static PlaceOrderEventPayload.Item item1;
-//    private static InventoryDto inventoryDto;
-//    private static InventoryDto inventoryDto1;
 
     @InjectMocks
     InventoryServiceImpl inventoryService;
