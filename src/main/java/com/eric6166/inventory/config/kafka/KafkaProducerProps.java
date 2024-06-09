@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true")
 public class KafkaProducerProps {
 
-    @Value("${spring.kafka.producers.item-not-available.topic-name}")
-    String itemNotAvailableTopicName;
+    @Value("${spring.kafka.producers.inventory-reserved-failed.topic-name}")
+    String inventoryReservedFailedTopicName;
 
-    @Value("${spring.kafka.producers.inventory-checked.topic-name}")
-    String inventoryCheckedTopicName;
+    @Value("${spring.kafka.producers.inventory-reserved.topic-name}")
+    String inventoryReservedTopicName;
 
 
 }

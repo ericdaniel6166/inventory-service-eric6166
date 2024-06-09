@@ -18,8 +18,8 @@ public class KafkaConsumerProps {
     @Value("${spring.kafka.consumers.test-topic.group-id}")
     String testTopicGroupId;
 
-    @Value("${spring.kafka.consumers.place-order.group-id}")
-    String placeOrderGroupId;
+    @Value("${spring.kafka.consumers.order-created.group-id}")
+    String orderCreatedGroupId;
 
     @Value("${spring.kafka.template.consumer.group-id}")
     String templateGroupId;

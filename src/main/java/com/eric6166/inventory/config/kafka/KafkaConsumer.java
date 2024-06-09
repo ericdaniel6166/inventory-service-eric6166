@@ -27,14 +27,14 @@ public class KafkaConsumer {
 
     }
 
-    @KafkaListener(topics = "${spring.kafka.consumers.place-order.topic-name}",
-            groupId = "${spring.kafka.consumers.place-order.group-id}",
-            containerFactory = "placeOrderKafkaListenerContainerFactory",
-            concurrency = "${spring.kafka.consumers.place-order.properties.concurrency}"
+    @KafkaListener(topics = "${spring.kafka.consumers.order-created.topic-name}",
+            groupId = "${spring.kafka.consumers.order-created.group-id}",
+            containerFactory = "orderCreatedKafkaListenerContainerFactory",
+            concurrency = "${spring.kafka.consumers.order-created.properties.concurrency}"
     )
-    public void handlePlaceOrderEvent(AppEvent appEvent) {
-        log.info("handlePlaceOrderEvent, appEvent: {}", appEvent);
-        inventoryService.handlePlaceOrderEvent(appEvent);
+    public void handleOrderCreatedEvent(AppEvent appEvent) {
+        log.info("handleOrderCreatedEvent, appEvent: {}", appEvent);
+        inventoryService.handleOrderCreatedEvent(appEvent);
 
     }
 

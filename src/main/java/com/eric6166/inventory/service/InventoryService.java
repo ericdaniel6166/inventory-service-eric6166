@@ -4,6 +4,6 @@ import com.eric6166.common.config.kafka.AppEvent;
 
 public interface InventoryService {
 
-    void handlePlaceOrderEvent(AppEvent appEvent);
+    void handleOrderCreatedEvent(AppEvent appEvent);
 
 }

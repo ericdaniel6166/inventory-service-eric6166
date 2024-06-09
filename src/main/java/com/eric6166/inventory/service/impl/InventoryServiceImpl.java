@@ -2,9 +2,9 @@ package com.eric6166.inventory.service.impl;
 
 import com.eric6166.common.config.kafka.AppEvent;
 import com.eric6166.inventory.config.kafka.KafkaProducerProps;
-import com.eric6166.inventory.dto.InventoryCheckedEventPayload;
-import com.eric6166.inventory.dto.ItemNotAvailableEventPayload;
-import com.eric6166.inventory.dto.PlaceOrderEventPayload;
+import com.eric6166.inventory.dto.InventoryReservedEventPayload;
+import com.eric6166.inventory.dto.InventoryReservedFailedEventPayload;
+import com.eric6166.inventory.dto.OrderCreatedEventPayload;
 import com.eric6166.inventory.repository.InventoryRepository;
 import com.eric6166.inventory.service.InventoryService;
 import jakarta.transaction.Transactional;
@@ -34,58 +34,58 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Transactional
     @Override
-    public void handlePlaceOrderEvent(AppEvent appEvent) {
-        var payload = modelMapper.map(appEvent.getPayload(), PlaceOrderEventPayload.class);
+    public void handleOrderCreatedEvent(AppEvent appEvent) {
+        var payload = modelMapper.map(appEvent.getPayload(), OrderCreatedEventPayload.class);
         var inventoryDtoList = inventoryRepository.findAllInventoryByProductIdIn(payload.getItemList().stream()
-                .map(PlaceOrderEventPayload.Item::getProductId)
+                .map(OrderCreatedEventPayload.Item::getProductId)
                 .toList());
-        List<PlaceOrderEventPayload.Item> placeOrderItemList = payload.getItemList();
-        List<ItemNotAvailableEventPayload.Item> notAvailableItemList = new ArrayList<>();
-        for (var placeOrderItem : placeOrderItemList) {
-            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(placeOrderItem.getProductId())).findFirst();
-            if (inventoryOpt.isEmpty() || inventoryOpt.get().getInventoryQuantity() < placeOrderItem.getOrderQuantity()) {
-                notAvailableItemList.add(ItemNotAvailableEventPayload.Item.builder()
-                        .productId(placeOrderItem.getProductId())
+        List<OrderCreatedEventPayload.Item> orderCreatedItemList = payload.getItemList();
+        List<InventoryReservedFailedEventPayload.Item> inventoryReservedFailedItemList = new ArrayList<>();
+        for (var orderCreatedItem : orderCreatedItemList) {
+            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId())).findFirst();
+            if (inventoryOpt.isEmpty() || inventoryOpt.get().getInventoryQuantity() < orderCreatedItem.getOrderQuantity()) {
+                inventoryReservedFailedItemList.add(InventoryReservedFailedEventPayload.Item.builder()
+                        .productId(orderCreatedItem.getProductId())
                         .inventoryQuantity(inventoryOpt.isEmpty() ? null : inventoryOpt.get().getInventoryQuantity())
-                        .orderQuantity(placeOrderItem.getOrderQuantity())
+                        .orderQuantity(orderCreatedItem.getOrderQuantity())
                         .build());
             }
         }
-        if (CollectionUtils.isNotEmpty(notAvailableItemList)) {
-            var itemNotAvailableEvent = AppEvent.builder()
+        if (CollectionUtils.isNotEmpty(inventoryReservedFailedItemList)) {
+            var inventoryReservedFailedEvent = AppEvent.builder()
                     .uuid(UUID.randomUUID().toString())
-                    .payload(ItemNotAvailableEventPayload.builder()
+                    .payload(InventoryReservedFailedEventPayload.builder()
                             .orderUuid(payload.getOrderUuid())
                             .orderDate(payload.getOrderDate())
                             .username(payload.getUsername())
-                            .itemList(notAvailableItemList)
+                            .itemList(inventoryReservedFailedItemList)
                             .build())
                     .build();
-            kafkaTemplate.send(kafkaProducerProps.getItemNotAvailableTopicName(), itemNotAvailableEvent);
-            log.info("itemNotAvailableEvent sent :{}", itemNotAvailableEvent);
+            kafkaTemplate.send(kafkaProducerProps.getInventoryReservedFailedTopicName(), inventoryReservedFailedEvent);
+            log.info("inventoryReservedFailedEvent sent :{}", inventoryReservedFailedEvent);
             return;
         }
-        List<InventoryCheckedEventPayload.Item> inventoryCheckedItemList = new ArrayList<>();
-        for (var placeOrderItem : placeOrderItemList) {
-            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(placeOrderItem.getProductId())).findFirst();
-            inventoryOpt.ifPresent(inventoryDto -> inventoryCheckedItemList.add(InventoryCheckedEventPayload.Item.builder()
-                    .productId(placeOrderItem.getProductId())
-                    .orderQuantity(placeOrderItem.getOrderQuantity())
+        List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
+        for (var orderCreatedItem : orderCreatedItemList) {
+            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId())).findFirst();
+            inventoryOpt.ifPresent(inventoryDto -> inventoryReservedItemList.add(InventoryReservedEventPayload.Item.builder()
+                    .productId(orderCreatedItem.getProductId())
+                    .orderQuantity(orderCreatedItem.getOrderQuantity())
                     .productPrice(inventoryDto.getProductPrice())
                     .build()));
         }
-        if (CollectionUtils.isNotEmpty(inventoryCheckedItemList)) {
-            var inventoryCheckedEvent = AppEvent.builder()
+        if (CollectionUtils.isNotEmpty(inventoryReservedItemList)) {
+            var inventoryReservedEvent = AppEvent.builder()
                     .uuid(UUID.randomUUID().toString())
-                    .payload(InventoryCheckedEventPayload.builder()
+                    .payload(InventoryReservedEventPayload.builder()
                             .orderUuid(payload.getOrderUuid())
                             .orderDate(payload.getOrderDate())
                             .username(payload.getUsername())
-                            .itemList(inventoryCheckedItemList)
+                            .itemList(inventoryReservedItemList)
                             .build())
                     .build();
-            kafkaTemplate.send(kafkaProducerProps.getInventoryCheckedTopicName(), inventoryCheckedEvent);
-            log.info("inventoryCheckedEvent sent :{}", inventoryCheckedEvent);
+            kafkaTemplate.send(kafkaProducerProps.getInventoryReservedTopicName(), inventoryReservedEvent);
+            log.info("inventoryReservedEvent sent :{}", inventoryReservedEvent);
         }
 
 

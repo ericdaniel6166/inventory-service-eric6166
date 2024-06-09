@@ -14,20 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemNotAvailableEventPayload {
+public class OrderCreatedEventPayload {
     String orderUuid;
     String username;
     List<Item> itemList;
     String orderDate;
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
     @Builder
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Item {
         Long productId;
         Integer orderQuantity;
-        Integer inventoryQuantity;
     }
 }

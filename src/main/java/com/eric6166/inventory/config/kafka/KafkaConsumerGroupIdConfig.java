@@ -28,8 +28,8 @@ public class KafkaConsumerGroupIdConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> placeOrderKafkaListenerContainerFactory() {
-        return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getPlaceOrderGroupId());
+    public ConcurrentKafkaListenerContainerFactory<String, Object> orderCreatedKafkaListenerContainerFactory() {
+        return kafkaConsumerConfig.kafkaListenerContainerFactory(kafkaConsumerProps.getOrderCreatedGroupId());
     }
 
 }

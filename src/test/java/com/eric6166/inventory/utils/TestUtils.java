@@ -1,7 +1,7 @@
 package com.eric6166.inventory.utils;
 
 import com.eric6166.inventory.dto.InventoryDto;
-import com.eric6166.inventory.dto.PlaceOrderEventPayload;
+import com.eric6166.inventory.dto.OrderCreatedEventPayload;
 import com.eric6166.inventory.dto.ProductDto;
 import com.eric6166.inventory.model.Product;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -44,8 +44,8 @@ public final class TestUtils {
                 .build();
     }
 
-    public static PlaceOrderEventPayload.Item mockPlaceOrderEventPayloadItem(Long productId, Integer orderQuantity) {
-        return PlaceOrderEventPayload.Item.builder()
+    public static OrderCreatedEventPayload.Item mockOrderCreatedEventPayloadItem(Long productId, Integer orderQuantity) {
+        return OrderCreatedEventPayload.Item.builder()
                 .orderQuantity(orderQuantity)
                 .productId(productId)
                 .build();

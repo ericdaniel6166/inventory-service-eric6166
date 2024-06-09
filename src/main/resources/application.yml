@@ -100,14 +100,14 @@ spring:
         properties:
           concurrency: ${app.kafka.template.consumer.properties.concurrency}
     producers:
-      item-not-available:
-        topic-name: item-not-available
-      inventory-checked:
-        topic-name: inventory-checked
+      inventory-reserved-failed:
+        topic-name: inventory-reserved-failed
+      inventory-reserved:
+        topic-name: inventory-reserved
     consumers:
-      place-order:
-        topic-name: place-order
-        group-id: place-order-${spring.application.name}
+      order-created:
+        topic-name: order-created
+        group-id: order-created-${spring.application.name}
         properties:
           concurrency: ${app.kafka.template.consumer.properties.concurrency}
       test-topic:
@@ -115,9 +115,9 @@ spring:
         group-id: test-topic-${spring.application.name}
         properties:
           concurrency: ${app.kafka.template.consumer.properties.concurrency}
-  #      order-item-not-available:
-  #        topic-name: order-item-not-available
-  #        group-id: order-item-not-available-${spring.application.name}
+  #      order-inventory-reserved-failed:
+  #        topic-name: order-inventory-reserved-failed
+  #        group-id: order-inventory-reserved-failed-${spring.application.name}
   #        properties:
   #          concurrency: ${app.kafka.default-concurrency}
   #      order-processing:
