@@ -42,7 +42,9 @@ public class InventoryServiceImpl implements InventoryService {
         List<OrderCreatedEventPayload.Item> orderCreatedItemList = payload.getItemList();
         List<InventoryReservedFailedEventPayload.Item> inventoryReservedFailedItemList = new ArrayList<>();
         for (var orderCreatedItem : orderCreatedItemList) {
-            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId())).findFirst();
+            var inventoryOpt = inventoryDtoList.stream()
+                    .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
+                    .findFirst();
             if (inventoryOpt.isEmpty() || inventoryOpt.get().getInventoryQuantity() < orderCreatedItem.getOrderQuantity()) {
                 inventoryReservedFailedItemList.add(InventoryReservedFailedEventPayload.Item.builder()
                         .productId(orderCreatedItem.getProductId())
@@ -67,7 +69,9 @@ public class InventoryServiceImpl implements InventoryService {
         }
         List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
         for (var orderCreatedItem : orderCreatedItemList) {
-            var inventoryOpt = inventoryDtoList.stream().filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId())).findFirst();
+            var inventoryOpt = inventoryDtoList.stream()
+                    .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
+                    .findFirst();
             inventoryOpt.ifPresent(inventoryDto -> inventoryReservedItemList.add(InventoryReservedEventPayload.Item.builder()
                     .productId(orderCreatedItem.getProductId())
                     .orderQuantity(orderCreatedItem.getOrderQuantity())
