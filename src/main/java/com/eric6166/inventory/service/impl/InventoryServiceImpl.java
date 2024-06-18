@@ -41,7 +41,7 @@ public class InventoryServiceImpl implements InventoryService {
                 .toList());
         List<OrderCreatedEventPayload.Item> orderCreatedItemList = payload.getItemList();
         List<InventoryReservedFailedEventPayload.Item> inventoryReservedFailedItemList = new ArrayList<>();
-        for (var orderCreatedItem : orderCreatedItemList) {
+        orderCreatedItemList.forEach(orderCreatedItem -> {
             var inventoryOpt = inventoryDtoList.stream()
                     .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
                     .findFirst();
@@ -52,7 +52,7 @@ public class InventoryServiceImpl implements InventoryService {
                         .orderQuantity(orderCreatedItem.getOrderQuantity())
                         .build());
             }
-        }
+        });
         if (CollectionUtils.isNotEmpty(inventoryReservedFailedItemList)) {
             var inventoryReservedFailedEvent = AppEvent.builder()
                     .uuid(UUID.randomUUID().toString())
@@ -68,16 +68,16 @@ public class InventoryServiceImpl implements InventoryService {
             return;
         }
         List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
-        for (var orderCreatedItem : orderCreatedItemList) {
-            var inventoryOpt = inventoryDtoList.stream()
-                    .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
-                    .findFirst();
-            inventoryOpt.ifPresent(inventoryDto -> inventoryReservedItemList.add(InventoryReservedEventPayload.Item.builder()
-                    .productId(orderCreatedItem.getProductId())
-                    .orderQuantity(orderCreatedItem.getOrderQuantity())
-                    .productPrice(inventoryDto.getProductPrice())
-                    .build()));
-        }
+        orderCreatedItemList.forEach(orderCreatedItem -> inventoryDtoList.stream()
+                .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
+                .findFirst()
+                .ifPresent(inventoryDto -> inventoryReservedItemList.add(
+                        InventoryReservedEventPayload.Item.builder()
+                                .productId(orderCreatedItem.getProductId())
+                                .orderQuantity(orderCreatedItem.getOrderQuantity())
+                                .productPrice(inventoryDto.getProductPrice())
+                                .build())));
+
         if (CollectionUtils.isNotEmpty(inventoryReservedItemList)) {
             var inventoryReservedEvent = AppEvent.builder()
                     .uuid(UUID.randomUUID().toString())
