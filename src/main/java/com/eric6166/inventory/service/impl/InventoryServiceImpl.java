@@ -39,7 +39,7 @@ public class InventoryServiceImpl implements InventoryService {
         var inventoryDtoList = inventoryRepository.findAllInventoryByProductIdIn(payload.getItemList().stream()
                 .map(OrderCreatedEventPayload.Item::getProductId)
                 .toList());
-        List<OrderCreatedEventPayload.Item> orderCreatedItemList = payload.getItemList();
+        var orderCreatedItemList = payload.getItemList();
         List<InventoryReservedFailedEventPayload.Item> inventoryReservedFailedItemList = new ArrayList<>();
         orderCreatedItemList.forEach(orderCreatedItem -> {
             var inventoryOpt = inventoryDtoList.stream()
