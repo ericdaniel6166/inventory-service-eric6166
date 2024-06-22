@@ -92,7 +92,7 @@ class InventoryServiceImplTest {
         inventoryService.handleOrderCreatedEvent(appEvent);
 
         Mockito.verify(inventoryRepository, Mockito.times(1)).findAllInventoryByProductIdIn(productIds);
-        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any());
+        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any(AppEvent.class));
     }
 
     @Test
@@ -124,7 +124,7 @@ class InventoryServiceImplTest {
         inventoryService.handleOrderCreatedEvent(appEvent);
 
         Mockito.verify(inventoryRepository, Mockito.times(1)).findAllInventoryByProductIdIn(productIds);
-        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any());
+        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any(AppEvent.class));
     }
 
     @Test
@@ -160,7 +160,7 @@ class InventoryServiceImplTest {
         inventoryService.handleOrderCreatedEvent(appEvent);
 
         Mockito.verify(inventoryRepository, Mockito.times(1)).findAllInventoryByProductIdIn(productIds);
-        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any());
+        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(Mockito.eq(topicName), Mockito.any(AppEvent.class));
     }
 
 
