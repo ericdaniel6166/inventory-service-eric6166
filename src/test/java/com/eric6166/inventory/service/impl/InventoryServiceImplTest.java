@@ -46,7 +46,7 @@ class InventoryServiceImplTest {
     @BeforeAll
     static void setUpAll() {
         item = TestUtils.mockOrderCreatedEventPayloadItem(RandomUtils.nextLong(1, 100), RandomUtils.nextInt(1, 10000));
-        item1 = TestUtils.mockOrderCreatedEventPayloadItem(RandomUtils.nextLong(1, 100), RandomUtils.nextInt(1, 10000));
+        item1 = TestUtils.mockOrderCreatedEventPayloadItem(RandomUtils.nextLong(101, 200), RandomUtils.nextInt(1, 10000));
 
 
     }
