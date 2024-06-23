@@ -68,8 +68,8 @@ public class InventoryServiceImpl implements InventoryService {
             return;
         }
         List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
-        orderCreatedItemList.forEach(
-                orderCreatedItem -> inventoryDtoList.stream()
+        orderCreatedItemList.forEach(orderCreatedItem ->
+                inventoryDtoList.stream()
                         .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
                         .findFirst()
                         .ifPresent(dto -> inventoryReservedItemList.add(
