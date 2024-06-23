@@ -68,15 +68,16 @@ public class InventoryServiceImpl implements InventoryService {
             return;
         }
         List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
-        orderCreatedItemList.forEach(orderCreatedItem -> inventoryDtoList.stream()
-                .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
-                .findFirst()
-                .ifPresent(inventoryDto -> inventoryReservedItemList.add(
-                        InventoryReservedEventPayload.Item.builder()
-                                .productId(orderCreatedItem.getProductId())
-                                .orderQuantity(orderCreatedItem.getOrderQuantity())
-                                .productPrice(inventoryDto.getProductPrice())
-                                .build())));
+        orderCreatedItemList.forEach(
+                orderCreatedItem -> inventoryDtoList.stream()
+                        .filter(dto -> dto.getProductId().equals(orderCreatedItem.getProductId()))
+                        .findFirst()
+                        .ifPresent(dto -> inventoryReservedItemList.add(
+                                InventoryReservedEventPayload.Item.builder()
+                                        .productId(orderCreatedItem.getProductId())
+                                        .orderQuantity(orderCreatedItem.getOrderQuantity())
+                                        .productPrice(dto.getProductPrice())
+                                        .build())));
 
         if (CollectionUtils.isNotEmpty(inventoryReservedItemList)) {
             var inventoryReservedEvent = AppEvent.builder()
