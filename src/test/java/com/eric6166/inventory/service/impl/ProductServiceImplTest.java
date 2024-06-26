@@ -49,9 +49,9 @@ class ProductServiceImplTest {
 
     @BeforeAll
     static void setUpAll() {
-        product = TestUtils.mockProduct(1L, 2L);
+        product = TestUtils.mockProduct(RandomUtils.nextLong(1, 100), RandomUtils.nextLong(1, 100));
         productDto = TestUtils.mockProductDto(product);
-        product1 = TestUtils.mockProduct(2L, 1L);
+        product1 = TestUtils.mockProduct(RandomUtils.nextLong(101, 200), RandomUtils.nextLong(101, 200));
         productDto1 = TestUtils.mockProductDto(product1);
 
     }
