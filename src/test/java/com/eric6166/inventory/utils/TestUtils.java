@@ -34,12 +34,12 @@ public final class TestUtils {
         return Product.builder()
                 .id(id)
                 .categoryId(categoryId)
-                .description(RandomStringUtils.randomAlphabetic(10))
-                .name(RandomStringUtils.randomAlphabetic(10))
+                .description(RandomStringUtils.random(255))
+                .name(RandomStringUtils.random(255))
                 .price(BigDecimal.valueOf(RandomUtils.nextDouble(1, 100000)))
-                .createdBy(RandomStringUtils.randomAlphabetic(10))
+                .createdBy(RandomStringUtils.random(30))
                 .createdDate(LocalDateTime.now())
-                .lastModifiedBy(RandomStringUtils.randomAlphabetic(10))
+                .lastModifiedBy(RandomStringUtils.random(30))
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
     }
