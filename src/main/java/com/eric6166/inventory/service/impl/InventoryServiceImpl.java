@@ -61,7 +61,7 @@ public class InventoryServiceImpl implements InventoryService {
                             .build())
                     .build();
             kafkaTemplate.send(kafkaProducerProps.getInventoryReservedFailedTopicName(), inventoryReservedFailedEvent);
-            log.info("inventoryReservedFailedEvent sent :{}", inventoryReservedFailedEvent);
+            log.info("inventoryReservedFailedEvent sent :{}", inventoryReservedFailedEvent.getUuid());
             return;
         }
         List<InventoryReservedEventPayload.Item> inventoryReservedItemList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class InventoryServiceImpl implements InventoryService {
                             .build())
                     .build();
             kafkaTemplate.send(kafkaProducerProps.getInventoryReservedTopicName(), inventoryReservedEvent);
-            log.info("inventoryReservedEvent sent :{}", inventoryReservedEvent);
+            log.info("inventoryReservedEvent sent :{}", inventoryReservedEvent.getUuid());
         }
 
 
