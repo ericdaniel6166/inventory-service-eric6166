@@ -1,13 +1,11 @@
 package com.eric6166.inventory.dto;
 
 import com.eric6166.jpa.model.BaseEntity;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
@@ -19,16 +17,15 @@ import java.math.BigDecimal;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
 public class ProductDto extends BaseEntity<String> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    Long id;
-    String name;
-    String description;
-    BigDecimal price;
-    Long categoryId;
+    private Long id;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private Long categoryId;
 }

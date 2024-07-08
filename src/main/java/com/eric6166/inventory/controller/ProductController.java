@@ -19,9 +19,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -42,10 +40,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
 
-    ProductService productService;
+    private final ProductService productService;
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/test")
@@ -63,7 +60,7 @@ public class ProductController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/cache/test")
     public ResponseEntity<String> getCacheTest(@RequestParam(required = false) String cacheName,
-               @RequestParam(required = false) String cacheKey) {
+                                               @RequestParam(required = false) String cacheKey) {
         productService.getCacheTest(cacheName, cacheKey);
         return ResponseEntity.ok("cache test");
     }
@@ -111,7 +108,7 @@ public class ProductController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     public ResponseEntity<AppResponse<MessageResponse>> deleteById(@PathVariable @NotNull @Min(value = 1)
-            @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id) throws AppNotFoundException {
+                                                                   @Max(value = BaseConst.DEFAULT_MAX_LONG) Long id) throws AppNotFoundException {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

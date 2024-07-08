@@ -13,9 +13,7 @@ import com.eric6166.inventory.service.ProductService;
 import com.eric6166.inventory.utils.Constants;
 import com.eric6166.jpa.dto.PageResponse;
 import com.eric6166.jpa.utils.PageUtils;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -26,12 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductServiceImpl implements ProductService {
 
-    ProductRepository productRepository;
-    ModelMapper modelMapper;
-    AppCacheManager appCacheManager;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
+    private final AppCacheManager appCacheManager;
 
     @Override
     public PageResponse<ProductDto> findAll(Integer pageNumber, Integer pageSize, String sortColumn, String sortDirection) {

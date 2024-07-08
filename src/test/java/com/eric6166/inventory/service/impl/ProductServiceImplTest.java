@@ -12,8 +12,6 @@ import com.eric6166.inventory.repository.ProductRepository;
 import com.eric6166.inventory.utils.TestUtils;
 import com.eric6166.jpa.dto.PageResponse;
 import com.eric6166.jpa.utils.PageUtils;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-@FieldDefaults(level = AccessLevel.PRIVATE)
 class ProductServiceImplTest {
 
     private static ProductDto productDto;
@@ -38,13 +35,13 @@ class ProductServiceImplTest {
     private static Product product;
     private static Product product1;
     @InjectMocks
-    ProductServiceImpl productService;
+    private ProductServiceImpl productService;
     @Mock
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
     @Mock
-    AppCacheManager appCacheManager;
+    private AppCacheManager appCacheManager;
 
 
     @BeforeAll

@@ -5,8 +5,6 @@ import com.eric6166.inventory.config.kafka.KafkaProducerProps;
 import com.eric6166.inventory.dto.OrderCreatedEventPayload;
 import com.eric6166.inventory.repository.InventoryRepository;
 import com.eric6166.inventory.utils.TestUtils;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,22 +24,21 @@ import java.util.List;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
-@FieldDefaults(level = AccessLevel.PRIVATE)
 class InventoryServiceImplTest {
 
     private static OrderCreatedEventPayload.Item item;
     private static OrderCreatedEventPayload.Item item1;
 
     @InjectMocks
-    InventoryServiceImpl inventoryService;
+    private InventoryServiceImpl inventoryService;
     @Mock
-    InventoryRepository inventoryRepository;
+    private InventoryRepository inventoryRepository;
     @Mock
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Mock
-    KafkaTemplate<String, Object> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
     @Mock
-    KafkaProducerProps kafkaProducerProps;
+    private KafkaProducerProps kafkaProducerProps;
 
     @BeforeAll
     static void setUpAll() {

@@ -12,8 +12,6 @@ import com.eric6166.jpa.utils.PageUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.validation.ConstraintViolationException;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,18 +33,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebMvcTest(controllers = {ProductController.class})
-@FieldDefaults(level = AccessLevel.PRIVATE)
 class ProductControllerTest {
 
     private static final String URL_TEMPLATE = "/product";
     private static ProductDto productDto;
     private static ProductDto productDto1;
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @MockBean
-    ProductService productService;
+    private ProductService productService;
 
     @BeforeAll
     static void setUpAll() {

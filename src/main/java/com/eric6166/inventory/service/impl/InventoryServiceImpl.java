@@ -8,9 +8,7 @@ import com.eric6166.inventory.dto.OrderCreatedEventPayload;
 import com.eric6166.inventory.repository.InventoryRepository;
 import com.eric6166.inventory.service.InventoryService;
 import jakarta.transaction.Transactional;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.modelmapper.ModelMapper;
@@ -24,13 +22,12 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class InventoryServiceImpl implements InventoryService {
 
-    InventoryRepository inventoryRepository;
-    ModelMapper modelMapper;
-    KafkaTemplate<String, Object> kafkaTemplate;
-    KafkaProducerProps kafkaProducerProps;
+    private final InventoryRepository inventoryRepository;
+    private final ModelMapper modelMapper;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaProducerProps kafkaProducerProps;
 
     @Transactional
     @Override
