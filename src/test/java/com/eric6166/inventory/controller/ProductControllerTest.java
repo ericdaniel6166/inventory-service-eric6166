@@ -47,8 +47,8 @@ class ProductControllerTest {
 
     @BeforeAll
     static void setUpAll() {
-        productDto = TestUtils.mockProductDto(TestUtils.mockProduct(1L, 2L));
-        productDto1 = TestUtils.mockProductDto(TestUtils.mockProduct(2L, 1L));
+        productDto = TestUtils.mockProductDto(TestUtils.mockProduct(RandomUtils.nextLong(1, 100), RandomUtils.nextLong(1, 100)));
+        productDto1 = TestUtils.mockProductDto(TestUtils.mockProduct(RandomUtils.nextLong(101, 200), RandomUtils.nextLong(101, 200)));
     }
 
 //    @BeforeEach
