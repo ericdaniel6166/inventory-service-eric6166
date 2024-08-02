@@ -58,9 +58,7 @@ class InventoryServiceImplTest {
 
     @Test
     void handlePlaceOrderEvent_givenOrderQuantityGreaterThanInventoryQuantity_thenSendInventoryReservedFailedEvent() {
-        var orderUuid = UUID.randomUUID().toString();
         var payload = OrderCreatedEventPayload.builder()
-                .orderUuid(orderUuid)
                 .username("customer")
                 .itemList(List.of(item, item1))
                 .build();
@@ -94,9 +92,7 @@ class InventoryServiceImplTest {
 
     @Test
     void handleOrderCreatedEvent_givenInventoryDtoNotFound_thenSendInventoryReservedFailedEvent() {
-        var orderUuid = UUID.randomUUID().toString();
         var payload = OrderCreatedEventPayload.builder()
-                .orderUuid(orderUuid)
                 .username("customer")
                 .itemList(List.of(item, item1))
                 .build();
@@ -126,9 +122,7 @@ class InventoryServiceImplTest {
 
     @Test
     void handleOrderCreatedEvent_thenSendInventoryReservedEvent() {
-        var orderUuid = UUID.randomUUID().toString();
         var payload = OrderCreatedEventPayload.builder()
-                .orderUuid(orderUuid)
                 .username("customer")
                 .itemList(List.of(item, item1))
                 .build();
